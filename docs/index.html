@@ -50,17 +50,26 @@
 <body>
     <h1>Spotify Compatibility</h1>
     
-    <button class="login-btn" onclick="addItem()">Login with Spotify</button>
+    <button class="login-btn" onclick="workingOrNot(); spotifyLogin()">Login with Spotify</button>
 
     <script>
 
-        function addItem() {
-            alert("Hire security team!");
+        function workingOrNot() {
+            alert("button is Working!");
         }
         function spotifyLogin() {
             
-            window.location.href = 'SPOTIFY_OAUTH_URL - REPLACE ME';        // SPOTIFY OAUTH FUNCTIONALITY
+            window.location.href = 'http://localhost:3000/login';        // SPOTIFY OAUTH FUNCTIONALITY
         }
+
+        function getAccessToken() {
+            const params = new URLSearchParams(window.location.search);
+            const accessToken = params.get('access_token');
+            if (accessToken) {
+                console.log('Access Token:', accessToken);
+            }
+        }
+        getAccessToken();
     </script>
 </body>
 </html>
