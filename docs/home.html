@@ -25,16 +25,20 @@
             margin-bottom: 50px;
         }
 
+        #profile {
+            margin-top: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <h1>Spotify Compatibility</h1>
+    <div id="profile"></div>
 
     <script>
-
         function getToken() {
             const params = new URLSearchParams(window.location.search);
-            return params.get('token');
+            return params.get('access_token'); // Fixed to 'access_token'
         }
         
         async function getProfile(access_token) {
@@ -57,10 +61,10 @@
         }
 
         window.onload = async function() {
-            const token = getToken();
+            const access_token = getToken();
 
-            if (token) {
-                console.log("token:", token);
+            if (access_token) {
+                console.log("Access Token:", access_token);
                 try {
                     const profile = await getProfile(access_token);
                     displayUserProfile(profile);
@@ -68,7 +72,7 @@
                     console.error("Error fetching data from Spotify:", error);
                 }
             } else {
-                console.log("No token found.");
+                console.log("No access token found.");
             }
         }
     </script>
