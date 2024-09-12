@@ -62,13 +62,37 @@
             const params = new URLSearchParams(window.location.search);
             return params.get('token');
         }
+        
+        async function getProfile(access_token) {
+            const response = await fetch('https://api.spotify.com/v1/me', {
+                headers: {
+                    'Authorization': 'Bearer ' + access_token
+                }
+            });
+            const data = await response.json();
+            return data;
+        }
 
-        window.onload = function() {
+        function displayUserProfile(profile) {
+            const profileDiv = document.getElementById('profile');
+            profileDiv.innerHTML = `
+                <h2>Welcome, ${profile.display_name}</h2>
+                <img src="${profile.images[0]?.url || 'https://placehold.co/150x150.png'}" alt="Profile Image" width="150" />
+                <p>Followers: ${profile.followers.total}</p>
+            `;
+        }
+
+        window.onload = async function() {
             const token = getToken();
 
             if (token) {
                 console.log("token:", token);
-                alert("token is Working!");
+                try {
+                    const profile = await getProfile(access_token);
+                    displayUserProfile(profile);
+                } catch (error) {
+                    console.error("Error fetching data from Spotify:", error);
+                }
             } else {
                 console.log("No token found.");
             }
