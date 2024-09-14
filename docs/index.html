@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Compatibility</title>
     <style>
-        /* Dark mode styles */
+        
         body {
             background-color: #121212;
             color: #ffffff;
@@ -14,15 +14,25 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
         h1 {
             font-size: 3rem;
-            color: #1DB954; /* Spotify green */
-            margin-bottom: 50px;
+            color: #1DB954;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            align-self: flex-start;
+        }
+
+        .login-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
 
         .login-btn {
@@ -50,7 +60,9 @@
 <body>
     <h1>Spotify Compatibility</h1>
     
-    <button class="login-btn" onclick="login()">Login with Spotify</button>
+    <div class="login-container">
+        <button class="login-btn" onclick="login()">Login with Spotify</button>
+    </div>
 
     <script>
         function login() {
