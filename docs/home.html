@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Compatibility</title>
     <style>
-        /* Dark mode styles */
+        
         body {
             background-color: #121212;
-            color: #ffffff;
+            color: #000000;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
@@ -21,8 +21,11 @@
 
         h1 {
             font-size: 3rem;
-            color: #1DB954; /* Spotify green */
-            margin-bottom: 50px;
+            color: #1DB954;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            align-self: flex-start;
         }
 
         #profile {
@@ -38,7 +41,7 @@
     <script>
         function getToken() {
             const params = new URLSearchParams(window.location.search);
-            return params.get('access_token'); // Fixed to 'access_token'
+            return params.get('access_token');
         }
         
         async function getProfile(access_token) {
@@ -55,7 +58,7 @@
             const profileDiv = document.getElementById('profile');
             profileDiv.innerHTML = `
                 <h2>Welcome, ${profile.display_name}</h2>
-                <img src="${profile.images[0]?.url || 'https://placehold.co/150x150.png'}" alt="Profile Image" width="150" />
+                <img src="${profile.images[0]?.url || 'https://placehold.co/150x150.png'}" alt="Profile Image" width="100" />
                 <p>Followers: ${profile.followers.total}</p>
             `;
         }
