@@ -10,14 +10,6 @@
     <div id="profile"></div>
     <div id = "top-artists"></div>
 
-
-
-
-
-
-
-
-
     <script>
         function getToken() {
             const params = new URLSearchParams(window.location.search);
@@ -83,6 +75,7 @@
             topArtistsDiv.innerHTML = '';
             if (artistNames.length > 0) {
                 artistNames.forEach(name => {
+                    console.log(name)
                     const artistElement = document.createElement('h1');
                     artistElement.textContent = name;
                     topArtistsDiv.appendChild(artistElement);
