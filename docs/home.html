@@ -75,13 +75,78 @@
             topArtistsDiv.innerHTML = '';
             if (artistNames.length > 0) {
                 artistNames.forEach(name => {
-                    console.log(name)
+                    //console.log(name)
                     const artistElement = document.createElement('h1');
                     artistElement.textContent = name;
                     topArtistsDiv.appendChild(artistElement);
                 });
             } else {
                 topArtistsDiv.innerHTML = '<p>No top artists to display.</p>';
+            }
+        }
+
+        function displayToptracks(trackNames) {
+            const toptracksDiv = document.getElementById('top-tracks');
+            toptracksDiv.innerHTML = '';
+            if (trackNames.length > 0) {
+                trackNames.forEach(name => {
+                    //console.log(name)
+                    const trackElement = document.createElement('h1');
+                    trackElement.textContent = name;
+                    toptracksDiv.appendChild(trackElement);
+                });
+            } else {
+                toptracksDiv.innerHTML = '<p>No top tracks to display.</p>';
+            }
+        }
+
+        async function getToptracks(access_token) {
+            const headers = {
+                'Authorization': 'Bearer ' + access_token
+            };
+
+            const params = new URLSearchParams({
+                'time_range': 'long_term',
+                'limit': '10',
+                'offset': '0'
+            });
+
+            try {
+                const response = await fetch(`https://api.spotify.com/v1/me/top/tracks?${params.toString()}`, {
+                    method: 'GET',
+                    headers: headers
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const items = data.items;
+                    if (items && items.length > 0) {
+                        return items.map(track => track.name);
+                    } else {
+                        console.log('No top tracks found.');
+                        return[];
+                    }
+                } else {
+                    console.error('Failed to fetch top tracks:', response.status, response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching top tracks:', error);
+                return[];
+            }
+        }
+
+        function displayTopTracks(trackNames) {
+            const toptracksDiv = document.getElementById('top-tracks');
+            topTracksDiv.innerHTML = '';
+            if (trackNames.length > 0) {
+                trackNames.forEach(name => {
+                    //console.log(name)
+                    const trackElement = document.createElement('h1');
+                    trackElement.textContent = name;
+                    toptracksDiv.appendChild(trackElement);
+                });
+            } else {
+                toptracksDiv.innerHTML = '<p>No top tracks to display.</p>';
             }
         }
 
