@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // General function to fetch data from backend
 async function fetchData(endpoint) {
-    const response = await fetch(`http://localhost:3000${endpoint}`);
+    const response = await fetch(`http://localhost:3001${endpoint}`);
     if (!response.ok) throw new Error(`Error fetching ${endpoint}: ${response.statusText}`);
     return response.json();
 }
