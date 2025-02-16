@@ -3,170 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Compatibility</title>
+    <title>Spotify Compatibility Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Spotify Compatibility</h1>
-    <div id="profile"></div>
-    <div id = "top-artists"></div>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <h2>Spotify Stats</h2>
+            <ul>
+                <li><a href="#" id="profile-tab">Profile</a></li>
+                <li><a href="#" id="top-artists-tab">Top Artists</a></li>
+                <li><a href="#" id="top-tracks-tab">Top Tracks</a></li>
+                <li><a href="#" id="followed-users-tab">Followed Users</a></li>
+            </ul>
+        </nav>
 
-    <script>
-        function getToken() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('access_token');
-        }
-        
-        async function getProfile(access_token) {
-            const response = await fetch('https://api.spotify.com/v1/me', {
-                headers: {
-                    'Authorization': 'Bearer ' + access_token
-                }
-            });
-            const data = await response.json();
-            return data;
-        }
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Profile Section -->
+            <section id="profile-section" class="section">
+                <div id="profile">
+                    <h2>Loading profile...</h2>
+                </div>
+            </section>
 
-        function displayUserProfile(profile) {
-            const profileDiv = document.getElementById('profile');
-            profileDiv.innerHTML = `
-                <h2>Welcome, ${profile.display_name}</h2>
-                <img src="${profile.images[0]?.url || 'https://placehold.co/150x150.png'}" alt="Profile Image" width="100" />
-                <p>Followers: ${profile.followers.total}</p>
-            `;
-        }
+            <!-- Top Artists -->
+            <section id="top-artists-section" class="section">
+                <h3>Top Artists</h3>
+                <div id="top-artists" class="grid">
+                    <p>Loading top artists...</p>
+                </div>
+            </section>
 
-        async function getTopArtists(access_token) {
-            const headers = {
-                'Authorization': 'Bearer ' + access_token
-            };
+            <!-- Top Tracks -->
+            <section id="top-tracks-section" class="section">
+                <h3>Top Tracks</h3>
+                <div id="top-tracks" class="grid">
+                    <p>Loading top tracks...</p>
+                </div>
+            </section>
+        </div>
+    </div>
 
-            const params = new URLSearchParams({
-                'time_range': 'long_term',
-                'limit': '5',
-                'offset': '0'
-            });
-
-            try {
-                const response = await fetch(`https://api.spotify.com/v1/me/top/artists?${params.toString()}`, {
-                    method: 'GET',
-                    headers: headers
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const items = data.items;
-                    if (items && items.length > 0) {
-                        return items.map(artist => artist.name);
-                    } else {
-                        console.log('No top artists found.');
-                        return[];
-                    }
-                } else {
-                    console.error('Failed to fetch top artists:', response.status, response.statusText);
-                }
-            } catch (error) {
-                console.error('Error fetching top artists:', error);
-                return[];
-            }
-        }
-
-        function displayTopArtists(artistNames) {
-            const topArtistsDiv = document.getElementById('top-artists');
-            topArtistsDiv.innerHTML = '';
-            if (artistNames.length > 0) {
-                artistNames.forEach(name => {
-                    //console.log(name)
-                    const artistElement = document.createElement('h1');
-                    artistElement.textContent = name;
-                    topArtistsDiv.appendChild(artistElement);
-                });
-            } else {
-                topArtistsDiv.innerHTML = '<p>No top artists to display.</p>';
-            }
-        }
-
-        function displayToptracks(trackNames) {
-            const toptracksDiv = document.getElementById('top-tracks');
-            toptracksDiv.innerHTML = '';
-            if (trackNames.length > 0) {
-                trackNames.forEach(name => {
-                    //console.log(name)
-                    const trackElement = document.createElement('h1');
-                    trackElement.textContent = name;
-                    toptracksDiv.appendChild(trackElement);
-                });
-            } else {
-                toptracksDiv.innerHTML = '<p>No top tracks to display.</p>';
-            }
-        }
-
-        async function getToptracks(access_token) {
-            const headers = {
-                'Authorization': 'Bearer ' + access_token
-            };
-
-            const params = new URLSearchParams({
-                'time_range': 'long_term',
-                'limit': '10',
-                'offset': '0'
-            });
-
-            try {
-                const response = await fetch(`https://api.spotify.com/v1/me/top/tracks?${params.toString()}`, {
-                    method: 'GET',
-                    headers: headers
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const items = data.items;
-                    if (items && items.length > 0) {
-                        return items.map(track => track.name);
-                    } else {
-                        console.log('No top tracks found.');
-                        return[];
-                    }
-                } else {
-                    console.error('Failed to fetch top tracks:', response.status, response.statusText);
-                }
-            } catch (error) {
-                console.error('Error fetching top tracks:', error);
-                return[];
-            }
-        }
-
-        function displayTopTracks(trackNames) {
-            const toptracksDiv = document.getElementById('top-tracks');
-            topTracksDiv.innerHTML = '';
-            if (trackNames.length > 0) {
-                trackNames.forEach(name => {
-                    //console.log(name)
-                    const trackElement = document.createElement('h1');
-                    trackElement.textContent = name;
-                    toptracksDiv.appendChild(trackElement);
-                });
-            } else {
-                toptracksDiv.innerHTML = '<p>No top tracks to display.</p>';
-            }
-        }
-
-        window.onload = async function() {
-            const access_token = getToken();
-
-            if (access_token) {
-                console.log("Access Token:", access_token);
-                try {
-                    const profile = await getProfile(access_token);
-                    displayUserProfile(profile);
-                    const topartists = await getTopArtists(access_token);
-                    displayTopArtists(topartists)
-                } catch (error) {
-                    console.error("Error fetching data from Spotify:", error);
-                }
-            } else {
-                console.log("No access token found.");
-            }
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
